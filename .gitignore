@@ -1,0 +1,10 @@
+**/alignments
+data/figures
+**/logs
+**/unitigs
+software/
+snakemake.err
+snakemake.out
+slurm/
+start_snakemake.sh
+similarity_matrix.txt

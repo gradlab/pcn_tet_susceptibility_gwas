@@ -1,0 +1,1 @@
+/n/grad_lab2/Lab/gonococcus/datasets/unemo_2016_WHO/assemblies/WHO_N_with_plasmids.fna  /n/grad_lab2/Lab/gonococcus/datasets/unemo_2016_WHO/annotations/WHO_N_with_plasmids.gff ref
