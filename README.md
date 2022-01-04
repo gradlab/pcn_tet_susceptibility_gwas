@@ -3,7 +3,7 @@ Data and code for "Genome wide association studies define minimal set of loci fo
 
 Accessions for the global dataset can be found in `data/prediction/pcn_tet_genotype_phenotype.tsv`, and accessions for the validation dataset can be found in `data/validation/2021-06-24_reimche_gisp_alleles.tsv`.
 
-Files > 100MB unavailable through GitHub repository (e.g. assemblies, alignments, unitigs). These are available upon request from mortimer@hsph.harvard.edu
+Files > 100MB unavailable through GitHub repository (e.g. assemblies, alignments, unitig and kmer presence/absence). These are available upon request from mortimer@hsph.harvard.edu
 
 ## conda_envs/
 Conda environments for GWAS software
