@@ -1,7 +1,7 @@
 library(tidyverse)
 library(cowplot)
 
-limits_tet <- read_tsv("data/gwas/pcn/significance_limits.txt", col_names = F)
+limits_tet <- read_tsv("data/gwas/tet/significance_limits.txt", col_names = F)
 p_threshold_tet <- limits_tet[[2,2]]
 
 limits_pcn <- read_tsv("data/gwas/pcn/significance_limits.txt", col_names = F)
