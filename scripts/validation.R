@@ -41,15 +41,41 @@ all_data %>% filter(is.na(TET_genotype)) %>% select(wgs_id, tetracycline, TET_ge
 # calculate sensitivity and specificity
 
 # PCN
+
 PCN_total_susceptible_phenotype <- all_data %>% filter(PCN_interpretation == "S") %>% nrow()
 PCN_total_nonresistant_phenotype <- all_data %>% filter(PCN_interpretation != "R") %>% nrow()
 PCN_total_susceptible_genotype <- all_data %>% filter(PCN_genotype == "S") %>% nrow()
 
+# PCN sensitivity & specificity susceptible
+PCN_true_positives <- all_data %>% filter(PCN_interpretation == "S" & PCN_genotype == "S") %>% nrow()
+PCN_false_negatives <- all_data %>% filter(PCN_interpretation == "S" & PCN_genotype != "S") %>% nrow()
+PCN_true_negatives <- all_data %>% filter(PCN_interpretation != "S" & PCN_genotype == "R") %>% nrow()
+PCN_false_positives <- all_data %>% filter(PCN_interpretation != "S" & PCN_genotype == "S") %>% nrow()
+
 PCN_sensitivity_susceptible <- (all_data %>% filter(PCN_interpretation == "S" & PCN_genotype == "S") %>% nrow())/PCN_total_susceptible_phenotype
 PCN_specificity_susceptible <- (all_data %>% filter(PCN_interpretation != "S" & PCN_genotype == "R") %>% nrow())/(all_data %>% filter(PCN_interpretation != "S") %>% nrow())
 
+PCN_sensitivity_susceptible + sqrt((PCN_sensitivity_susceptible*(1-PCN_sensitivity_susceptible))/PCN_true_positives)
+PCN_sensitivity_susceptible - sqrt((PCN_sensitivity_susceptible*(1-PCN_sensitivity_susceptible))/PCN_true_positives)
+
+PCN_specificity_susceptible + sqrt((PCN_specificity_susceptible*(1-PCN_specificity_susceptible))/PCN_true_positives)
+PCN_specificity_susceptible - sqrt((PCN_specificity_susceptible*(1-PCN_specificity_susceptible))/PCN_true_positives)
+
+# PCN sensitivity & specificity non-resistant
+
 PCN_sensitivity_nonresistant <- (all_data %>% filter(PCN_interpretation != "R" & PCN_genotype == "S") %>% nrow())/PCN_total_nonresistant_phenotype
 PCN_specificity_nonresistant <- (all_data %>% filter(PCN_interpretation == "R" & PCN_genotype == "R") %>% nrow())/(all_data %>% filter(PCN_interpretation == "R") %>% nrow())
+
+PCN_true_positives <- all_data %>% filter(PCN_interpretation != "R" & PCN_genotype == "S") %>% nrow()
+PCN_false_negatives <- all_data %>% filter(PCN_interpretation != "R" & PCN_genotype != "S") %>% nrow()
+PCN_true_negatives <- all_data %>% filter(PCN_interpretation == "R" & PCN_genotype == "R") %>% nrow()
+PCN_false_positives <- all_data %>% filter(PCN_interpretation == "R" & PCN_genotype == "S") %>% nrow()
+
+PCN_sensitivity_nonresistant + sqrt((PCN_sensitivity_nonresistant*(1-PCN_sensitivity_nonresistant))/PCN_true_positives)
+PCN_sensitivity_nonresistant - sqrt((PCN_sensitivity_nonresistant*(1-PCN_sensitivity_nonresistant))/PCN_true_positives)
+
+PCN_specificity_nonresistant + sqrt((PCN_specificity_nonresistant*(1-PCN_specificity_nonresistant))/PCN_true_positives)
+PCN_specificity_nonresistant - sqrt((PCN_specificity_nonresistant*(1-PCN_specificity_nonresistant))/PCN_true_positives)
 
 PCN_total_susceptible_phenotype
 PCN_total_nonresistant_phenotype
@@ -66,11 +92,37 @@ TET_total_susceptible_phenotype <- all_data %>% filter(TET_interpretation == "S"
 TET_total_nonresistant_phenotype <- all_data %>% filter(TET_interpretation != "R") %>% nrow()
 TET_total_susceptible_genotype <- all_data %>% filter(TET_genotype == "S") %>% nrow()
 
+# TET sensitivity & specificity susceptible
+
+TET_true_positives <- all_data %>% filter(TET_interpretation == "S" & TET_genotype == "S") %>% nrow()
+TET_false_negatives <- all_data %>% filter(TET_interpretation == "S" & TET_genotype == "R") %>% nrow()
+TET_true_negatives <- all_data %>% filter(TET_interpretation != "S" & TET_genotype == "R") %>% nrow()
+TET_false_positives <- all_data %>% filter(TET_interpretation != "S" & TET_genotype == "S") %>% nrow()
+
 TET_sensitivity_susceptible <- (all_data %>% filter(TET_interpretation == "S" & TET_genotype == "S") %>% nrow())/TET_total_susceptible_phenotype
 TET_specificity_susceptible <- (all_data %>% filter(TET_interpretation != "S" & TET_genotype == "R") %>% nrow())/(all_data %>% filter(TET_interpretation != "S") %>% nrow())
 
+TET_sensitivity_susceptible + sqrt((TET_sensitivity_susceptible*(1-TET_sensitivity_susceptible))/TET_true_positives)
+TET_sensitivity_susceptible - sqrt((TET_sensitivity_susceptible*(1-TET_sensitivity_susceptible))/TET_true_positives)
+
+TET_specificity_susceptible + sqrt((TET_specificity_susceptible*(1-TET_specificity_susceptible))/TET_true_positives)
+TET_specificity_susceptible - sqrt((TET_specificity_susceptible*(1-TET_specificity_susceptible))/TET_true_positives)
+
+# TET sensitivity & specificity non-resistant
+
 TET_sensitivity_nonresistant <- (all_data %>% filter(TET_interpretation != "R" & TET_genotype == "S") %>% nrow())/TET_total_nonresistant_phenotype
 TET_specificity_nonresistant <- (all_data %>% filter(TET_interpretation == "R" & TET_genotype == "R") %>% nrow())/(all_data %>% filter(TET_interpretation == "R") %>% nrow())
+
+TET_true_positives <- all_data %>% filter(TET_interpretation != "R" & TET_genotype == "S") %>% nrow()
+TET_false_negatives <- all_data %>% filter(TET_interpretation != "R" & TET_genotype == "R") %>% nrow()
+TET_true_negatives <- all_data %>% filter(TET_interpretation == "R" & TET_genotype == "R") %>% nrow()
+TET_false_positives <- all_data %>% filter(TET_interpretation == "R" & TET_genotype == "S") %>% nrow()
+
+TET_sensitivity_nonresistant + sqrt((TET_sensitivity_nonresistant*(1-TET_sensitivity_nonresistant))/TET_true_positives)
+TET_sensitivity_nonresistant - sqrt((TET_sensitivity_nonresistant*(1-TET_sensitivity_nonresistant))/TET_true_positives)
+
+TET_specificity_nonresistant + sqrt((TET_specificity_nonresistant*(1-TET_specificity_nonresistant))/TET_true_positives)
+TET_specificity_nonresistant - sqrt((TET_specificity_nonresistant*(1-TET_specificity_nonresistant))/TET_true_positives)
 
 TET_total_susceptible_phenotype
 TET_total_nonresistant_phenotype
@@ -81,6 +133,71 @@ TET_specificity_susceptible
 
 TET_sensitivity_nonresistant
 TET_specificity_nonresistant
+
+# plasmid only prediction
+
+# PCN
+PCN_total_susceptible_phenotype <- all_data %>% filter(PCN_interpretation == "S") %>% nrow()
+PCN_total_nonresistant_phenotype <- all_data %>% filter(PCN_interpretation != "R") %>% nrow()
+PCN_total_susceptible_genotype <- all_data %>% filter(blaTEM == 0) %>% nrow()
+
+PCN_true_positives <- all_data %>% filter(PCN_interpretation == "S" & blaTEM == 0) %>% nrow()
+PCN_false_negatives <- all_data %>% filter(PCN_interpretation == "S" & blaTEM == 1) %>% nrow()
+PCN_true_negatives <- all_data %>% filter(PCN_interpretation != "S" & blaTEM == 1) %>% nrow()
+PCN_false_positives <- all_data %>% filter(PCN_interpretation != "S" & blaTEM == 0) %>% nrow()
+
+PCN_sensitivity_susceptible <- (all_data %>% filter(PCN_interpretation == "S" & blaTEM == 0) %>% nrow())/PCN_total_susceptible_phenotype
+PCN_specificity_susceptible <- (all_data %>% filter(PCN_interpretation != "S" & blaTEM == 1) %>% nrow())/(all_data %>% filter(PCN_interpretation != "S") %>% nrow())
+
+PCN_sensitivity_nonresistant <- (all_data %>% filter(PCN_interpretation != "R" & blaTEM == 0) %>% nrow())/PCN_total_nonresistant_phenotype
+PCN_specificity_nonresistant <- (all_data %>% filter(PCN_interpretation == "R" & blaTEM == 1) %>% nrow())/(all_data %>% filter(PCN_interpretation == "R") %>% nrow())
+
+PCN_true_positives <- all_data %>% filter(PCN_interpretation != "R" & blaTEM == 0) %>% nrow()
+PCN_false_negatives <- all_data %>% filter(PCN_interpretation != "R" & blaTEM == 1) %>% nrow()
+PCN_true_negatives <- all_data %>% filter(PCN_interpretation == "R" & blaTEM == 1) %>% nrow()
+PCN_false_positives <- all_data %>% filter(PCN_interpretation == "R" & blaTEM == 0) %>% nrow()
+
+PCN_total_susceptible_phenotype
+PCN_total_nonresistant_phenotype
+PCN_total_susceptible_genotype
+
+PCN_sensitivity_susceptible
+PCN_specificity_susceptible
+
+PCN_sensitivity_nonresistant
+PCN_specificity_nonresistant
+
+# TET
+TET_total_susceptible_phenotype <- all_data %>% filter(TET_interpretation == "S") %>% nrow()
+TET_total_nonresistant_phenotype <- all_data %>% filter(TET_interpretation != "R") %>% nrow()
+TET_total_susceptible_genotype <- all_data %>% filter(tetM == 0) %>% nrow()
+
+TET_true_positives <- all_data %>% filter(TET_interpretation == "S" & tetM == 0) %>% nrow()
+TET_false_negatives <- all_data %>% filter(TET_interpretation == "S" & tetM == 1) %>% nrow()
+TET_true_negatives <- all_data %>% filter(TET_interpretation != "S" & tetM == 1) %>% nrow()
+TET_false_positives <- all_data %>% filter(TET_interpretation != "S" & tetM == 0) %>% nrow()
+
+TET_sensitivity_susceptible <- (all_data %>% filter(TET_interpretation == "S" & tetM == 0) %>% nrow())/TET_total_susceptible_phenotype
+TET_specificity_susceptible <- (all_data %>% filter(TET_interpretation != "S" & tetM == 1) %>% nrow())/(all_data %>% filter(TET_interpretation != "S") %>% nrow())
+
+TET_sensitivity_nonresistant <- (all_data %>% filter(TET_interpretation != "R" & tetM == 0) %>% nrow())/TET_total_nonresistant_phenotype
+TET_specificity_nonresistant <- (all_data %>% filter(TET_interpretation == "R" & tetM == 1) %>% nrow())/(all_data %>% filter(TET_interpretation == "R") %>% nrow())
+
+TET_true_positives <- all_data %>% filter(TET_interpretation != "R" & tetM == 0) %>% nrow()
+TET_false_negatives <- all_data %>% filter(TET_interpretation != "R" & tetM == 1) %>% nrow()
+TET_true_negatives <- all_data %>% filter(TET_interpretation == "R" & tetM == 1) %>% nrow()
+TET_false_positives <- all_data %>% filter(TET_interpretation == "R" & tetM == 0) %>% nrow()
+
+TET_total_susceptible_phenotype
+TET_total_nonresistant_phenotype
+TET_total_susceptible_genotype
+
+TET_sensitivity_susceptible
+TET_specificity_susceptible
+
+TET_sensitivity_nonresistant
+TET_specificity_nonresistant
+
 
 # utility in different populations
 

@@ -2,9 +2,14 @@
 data/figures
 **/logs
 **/unitigs
+**/kmers
 software/
 snakemake.err
 snakemake.out
 slurm/
 start_snakemake.sh
 similarity_matrix.txt
+.snakemake
+*kmer_annotated_WHO_N.txt
+*kmer_significance.txt
+*kmer_patterns.txt

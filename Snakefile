@@ -5,7 +5,7 @@ localrules:
 
 rule all:
     input:
-        "data/figures/manhattan_plot.pdf",
+#        "data/figures/manhattan_plot.pdf",
         "data/figures/manhattan_plot_kmers.pdf"
 
 
@@ -49,18 +49,32 @@ rule unitigs:
         rmdir unitigs/
         """
 
-rule kmers:
+rule kmers_tet:
     input:
-        strain_list="data/gwas/{abx}/unitigs/strain_list.txt"
+        "data/gwas/tet/unitigs/strain_list.txt"
     output:
-        "data/gwas/{abx}/kmers/fsm_kmers.txt.gz",
+        "data/gwas/tet/kmers/fsm_kmers.txt.gz",
     resources:
-        cpus=4,
-        mem_mb=lambda wildcards, attempt: attempt * 10000,
+        cpus=1,
+        mem_mb=lambda wildcards, attempt: attempt * 50000,
         time=lambda wildcards, attempt: attempt * 480,
     shell:
         """
-        software/fsm-lite/fsm-lite -l {input} -s 6 -S 610 -v -t fsm_kmers | gzip -c - > {output}
+        software/fsm-lite/fsm-lite -l {input} -s 34 -S 3419 -v -t fsm_kmers | gzip -c - > {output}
+        """
+
+rule kmers_pcn:
+    input:
+        "data/gwas/pcn/unitigs/strain_list.txt"
+    output:
+        "data/gwas/pcn/kmers/fsm_kmers.txt.gz",
+    resources:
+        cpus=1,
+        mem_mb=lambda wildcards, attempt: attempt * 200000,
+        time=lambda wildcards, attempt: attempt * 2160,
+    shell:
+        """
+        software/fsm-lite/fsm-lite -l {input} -s 62 -S 6158 -v -t fsm_kmers | gzip -c - > {output}
         """
 
 rule similarity_matrix:
@@ -115,7 +129,7 @@ rule lmm_gwas_kmers:
     resources:
         cpus=1,
         mem_mb=lambda wildcards, attempt: attempt * 10000,
-        time=lambda wildcards, attempt: attempt * 360,
+        time=lambda wildcards, attempt: attempt * 1440,
     conda:
         "conda_envs/pyseer.yml"
     shell:
@@ -209,13 +223,18 @@ rule annotate_kmers:
         "data/gwas/{abx}/{abx}_kmer_annotated_WHO_N.txt",
     resources:
         cpus=1,
-        mem_mb=1000,
-        time=10
+        mem_mb=10000,
+        time=500
     conda:
         "conda_envs/pyseer.yml"
+    shadow: "shallow"
+    params:
+        out_dir="data/gwas/{abx}/"
     shell:
         """
         annotate_hits_pyseer {input.kmer_significance} {input.reference} {output}
+        mv remaining_kmers.fa {params.out_dir}
+        mv remaining_kmers.txt {params.out_dir}
         """
 
 rule manhattan_plot:
@@ -241,5 +260,5 @@ rule manhattan_plot_kmers:
         """
         load_R
         load_R_packages
-        Rscript manhattan_plot.R
+        Rscript manhattan_plot_kmers.R
         """
