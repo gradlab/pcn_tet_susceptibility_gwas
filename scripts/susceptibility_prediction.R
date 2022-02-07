@@ -2,12 +2,12 @@ library(tidyverse)
 library(cowplot)
 
 # global data
-all_data <- read_tsv("data/prediction/pcn_tet_genotype_phenotype.tsv",
+all_data <- read_tsv("../data/prediction/pcn_tet_genotype_phenotype.tsv",
                             col_types = cols(penicillin = col_character()))
 
 # validation data
-validation_metadata <- read_tsv("data/validation/reimche_metadata.tsv")
-validation_resistance <- read_tsv("data/validation/2021-06-24_reimche_gisp_alleles.tsv")
+validation_metadata <- read_tsv("../data/validation/reimche_metadata.tsv")
+validation_resistance <- read_tsv("../data/validation/2021-06-24_reimche_gisp_alleles.tsv")
 
 # combine data
 
@@ -91,6 +91,51 @@ TET_specificity_susceptible <- (metadata_tet %>% filter(TET_interpretation != "S
 
 TET_sensitivity_nonresistant <- (metadata_tet %>% filter(TET_interpretation != "R" & TET_genotype == "S") %>% nrow())/TET_total_nonresistant_phenotype
 TET_specificity_nonresistant <- (metadata_tet %>% filter(TET_interpretation == "R" & TET_genotype == "R") %>% nrow())/(metadata_tet %>% filter(TET_interpretation == "R") %>% nrow())
+
+TET_total_susceptible_phenotype
+TET_total_nonresistant_phenotype
+TET_total_susceptible_genotype
+
+TET_sensitivity_susceptible
+TET_specificity_susceptible
+
+TET_sensitivity_nonresistant
+TET_specificity_nonresistant
+
+# calculate sensitivity and specificity of only plasmid determinants
+
+# PCN
+PCN_total_susceptible_phenotype <- metadata_pcn %>% filter(PCN_interpretation == "S") %>% nrow()
+PCN_total_nonresistant_phenotype <- metadata_pcn %>% filter(PCN_interpretation != "R") %>% nrow()
+PCN_total_susceptible_genotype <- all_data %>% filter(blaTEM == 0) %>% nrow()
+
+PCN_sensitivity_susceptible <- (metadata_pcn %>% filter(PCN_interpretation == "S" & blaTEM == 0) %>% nrow())/PCN_total_susceptible_phenotype
+PCN_specificity_susceptible <- (metadata_pcn %>% filter(PCN_interpretation != "S" & blaTEM == 1) %>% nrow())/(metadata_pcn %>% filter(PCN_interpretation != "S") %>% nrow())
+
+PCN_sensitivity_nonresistant <- (metadata_pcn %>% filter(PCN_interpretation != "R" & blaTEM == 0) %>% nrow())/PCN_total_nonresistant_phenotype
+PCN_specificity_nonresistant <- (metadata_pcn %>% filter(PCN_interpretation == "R" & blaTEM == 1) %>% nrow())/(metadata_pcn %>% filter(PCN_interpretation == "R") %>% nrow())
+
+PCN_total_susceptible_phenotype
+PCN_total_nonresistant_phenotype
+PCN_total_susceptible_genotype
+
+PCN_sensitivity_susceptible
+PCN_specificity_susceptible
+
+PCN_sensitivity_nonresistant
+PCN_specificity_nonresistant
+
+# TET
+
+TET_total_susceptible_phenotype <- metadata_tet %>% filter(TET_interpretation == "S") %>% nrow()
+TET_total_nonresistant_phenotype <- metadata_tet %>% filter(TET_interpretation != "R") %>% nrow()
+TET_total_susceptible_genotype <- all_data %>% filter(tetM == 0) %>% nrow()
+
+TET_sensitivity_susceptible <- (metadata_tet %>% filter(TET_interpretation == "S" & tetM == 0) %>% nrow())/TET_total_susceptible_phenotype
+TET_specificity_susceptible <- (metadata_tet %>% filter(TET_interpretation != "S" & tetM == 1) %>% nrow())/(metadata_tet %>% filter(TET_interpretation != "S") %>% nrow())
+
+TET_sensitivity_nonresistant <- (metadata_tet %>% filter(TET_interpretation != "R" & tetM == 0) %>% nrow())/TET_total_nonresistant_phenotype
+TET_specificity_nonresistant <- (metadata_tet %>% filter(TET_interpretation == "R" & tetM == 1) %>% nrow())/(metadata_tet %>% filter(TET_interpretation == "R") %>% nrow())
 
 TET_total_susceptible_phenotype
 TET_total_nonresistant_phenotype
