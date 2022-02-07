@@ -5,8 +5,7 @@ localrules:
 
 rule all:
     input:
-#        "data/figures/manhattan_plot.pdf",
-        "data/figures/manhattan_plot_kmers.pdf"
+        "data/figures/manhattan_plot.pdf",
 
 
 rule gubbins:
@@ -248,17 +247,4 @@ rule manhattan_plot:
         load_R
         load_R_packages
         Rscript manhattan_plot.R
-        """
-
-rule manhattan_plot_kmers:
-    input:
-        expand("data/gwas/{abx}/{abx}_kmer_annotated_WHO_N.txt", abx=["pcn","tet"]),
-        expand("data/gwas/{abx}/kmer_significance_limits.txt", abx=["pcn", "tet"])
-    output:
-        "data/figures/manhattan_plot_kmers.pdf"
-    shell:
-        """
-        load_R
-        load_R_packages
-        Rscript manhattan_plot_kmers.R
         """
